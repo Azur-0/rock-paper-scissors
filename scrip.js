@@ -1,80 +1,93 @@
-let choice = '';
+let opponent;
 let player = 'rock';
-let computerCounter = 0;
+
 let playerCounter = 0;
-let playerNumber = 0;
-let computerNumber = 0;
+let computerCounter = 0;
 
 let getComputerChoice = () => {
-    let x = Math.random();
-    x < 0.333 ? choice = 'rock' :
-    x > 0.666 ? choice = 'scissors' :
-    choice = 'paper';
-    return choice;
+    opponent = Math.random();
+    opponent < 0.333 ? opponent = 'rock' :
+    opponent > 0.666 ? opponent = 'scissors' :
+    opponent = 'paper';
+    return opponent;
 };
 
+const div = document.querySelector('#result');
+const score = document.querySelector('#score');
+let str = '';
 
-function playRound(str, choice) {
-    getComputerChoice();
-    player = str.toLowerCase();
-    if (str == choice){
-        console.log('Draw! Both have picked ' + str);
+function playRound(player, opponent) {
+    player = player.toLowerCase();
+    if (player == opponent){
+        str = 'Draw! Both have picked ' + player;
+        div.textContent = str;
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'rock' && choice == 'scissors'){
-        console.log('You win! Rock beats scissors!');
+    else if (player == 'rock' && opponent == 'scissors'){
         playerCounter++;
+        div.textContent = 'You win! Rock beats scissors!';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'rock' && choice == 'paper'){
-        console.log('You lose! Paper beats rock.');
+    else if (player == 'rock' && opponent == 'paper'){
         computerCounter++;
+        div.textContent = 'You lose! Paper beats rock.';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'paper' && choice == 'scissors'){
-        console.log('You lose! Scissors beat paper.');
+    else if (player == 'paper' && opponent == 'scissors'){
         computerCounter++;
+        div.textContent = 'You lose! Scissors beat paper.';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'paper' && choice == 'rock'){
-        console.log('You win! Paper beats rock!');
+    else if (player == 'paper' && opponent == 'rock'){
         playerCounter++;
+        div.textContent = 'You win! Paper beats rock!';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'scissors' && choice == 'paper'){
-        console.log('You win! Scissors beat paper!');
+    else if (player == 'scissors' && opponent == 'paper'){
         playerCounter++;
+        div.textContent =  'You win! Scissors beat paper!';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
-    else if (str == 'scissors' && choice == 'rock'){
-        console.log('You lose! Rock beats scissors.');
+    else if (player == 'scissors' && opponent == 'rock'){
         computerCounter++;
-    }
-    else {
-        return 'error';
-    }
-  }
-
-  getComputerChoice();
-
-  console.log(playRound(player, choice));
-
-  let playerPick = 'rock';
-  function game(){
-    computerCounter = 0;
-    playerCounter = 0;
-
-    for (let i = 0; i < 5; i++) {
-        playerPick = prompt('Choose rock, paper or scissors!', '');
-        playerPick = playerPick.toLowerCase();
-        playRound(playerPick, choice);
-    }
-
-    if (playerCounter > computerCounter) {
-        console.log('You won! You had ' + playerCounter + ' points and opponent had ' + computerCounter + ' points!');
-    }
-    else if (playerCounter < computerCounter) {
-        console.log('You lost! You had ' + playerCounter + ' points and opponent had ' + computerCounter + ' points!')
-    }
-    else {
-        console.log('Draw! You had ' + playerCounter + ' points and opponent had ' + computerCounter + ' points!')
+        div.textContent = 'You lose! Rock beats scissors.';
+        score.textContent = `Player ${playerCounter} - ${computerCounter} Opponent`;
     }
     
+    if(playerCounter == 5){
+        playerWins();
+    }
+    else if(computerCounter == 5){
+        opponentWins();
+    }
   }
+
+  function playerWins() {
+    div.textContent = 'Congratulations! You won!';
+    playerCounter = 0;
+    computerCounter = 0;
+  }
+
+  function opponentWins() {
+    div.textContent = 'You lost. Better luck next time!';
+    playerCounter = 0;
+    computerCounter = 0;
+  }
+
+  const buttons = document.querySelectorAll('.btn');
+
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function myFunction(){
+        playerSelection(button);
+    });
+  });
+
+  function playerSelection(button) {
+    player = button.textContent.toLowerCase();
+    playRound(player, getComputerChoice());
+  }
+
 
 
   
